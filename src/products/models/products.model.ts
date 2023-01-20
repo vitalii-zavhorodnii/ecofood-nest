@@ -1,5 +1,14 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  Model,
+  Table,
+  BelongsToMany,
+} from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { Category } from 'categories/models/categories.model';
+import { ProductsCategories } from './products-categories.model';
 
 interface ProductCreationAttrs {
   title: string;
@@ -16,6 +25,14 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     primaryKey: true,
   })
   id: number;
+
+  @ApiProperty({ example: 'banana', description: 'Unique url of product' })
+  @Column({
+    type: DataType.STRING,
+    unique: true,
+    allowNull: false,
+  })
+  url: string;
 
   @ApiProperty({ example: 'Banana', description: 'Product title' })
   @Column({
@@ -80,41 +97,34 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   in_stock: boolean;
 
   @ApiProperty({
-    example: [1, 5, 7],
-    description: 'Array of categories IDs wich contain this product',
-  })
-  @Column({
-    type: DataType.ARRAY(DataType.INTEGER),
-    defaultValue: null,
-  })
-  category_id: [number]; // relate array of categories with contain this product number[]
-
-  @ApiProperty({
-    example: [1, 5, 7],
-    description: 'Array of IDs wich vitamins contain this product',
-  })
-  @Column({
-    type: DataType.ARRAY(DataType.INTEGER),
-    defaultValue: null,
-  })
-  vitamins: [number]; // array of IDs of vitamins number[]
-
-  @ApiProperty({
-    example: [1, 5, 7],
-    description: 'Array of suggested products IDs wich related to this product',
-  })
-  @Column({
-    type: DataType.ARRAY(DataType.INTEGER),
-    defaultValue: null,
-  })
-  suggested: [number]; // array of IDs suggested products number[]
-
-  @ApiProperty({
     example: 23,
     description: 'ID of measure',
   })
   @Column({
     type: DataType.INTEGER,
   })
-  measure_id: number; // relate
+  measure_id: number;
+
+  @BelongsToMany(() => Category, () => ProductsCategories)
+  categories: Category[];
+
+  // @ApiProperty({
+  //   example: [1, 5, 7],
+  //   description: 'Array of IDs wich vitamins contain this product',
+  // })
+  // @Column({
+  //   type: DataType.ARRAY(DataType.INTEGER),
+  //   defaultValue: null,
+  // })
+  // vitamins: [number]; // array of IDs of vitamins number[]
+
+  // @ApiProperty({
+  //   example: [1, 5, 7],
+  //   description: 'Array of suggested products IDs wich related to this product',
+  // })
+  // @Column({
+  //   type: DataType.ARRAY(DataType.INTEGER),
+  //   defaultValue: null,
+  // })
+  // suggested: [number]; // array of IDs suggested products number[]
 }
