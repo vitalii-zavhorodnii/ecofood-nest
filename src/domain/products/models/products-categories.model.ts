@@ -6,8 +6,8 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { Category } from 'categories/models/categories.model';
-import { Product } from 'products/models/products.model';
+import { Category } from 'domain/categories/models/categories.model';
+import { Product } from 'domain/products/models/products.model';
 
 @Table({ tableName: 'products_categories', createdAt: false, updatedAt: false })
 export class ProductsCategories extends Model<ProductsCategories> {

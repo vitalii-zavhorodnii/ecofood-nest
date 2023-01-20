@@ -15,4 +15,11 @@ export class CreateCategoryDto {
   })
   @IsString({ message: 'field must be a string' })
   readonly description: string;
+
+  @ApiProperty({
+    example: 'URL of category',
+    description: 'Category URL',
+  })
+  @IsString({ message: 'field must be a string' })
+  readonly url: string;
 }

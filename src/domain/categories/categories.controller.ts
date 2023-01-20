@@ -4,7 +4,7 @@ import { CategoriesService } from './categories.service';
 
 import { CreateCategoryDto } from './dto/create-category.dto';
 
-@Controller('categories')
+@Controller('api/categories')
 export class CategoriesController {
   constructor(private categoryService: CategoriesService) {}
 
@@ -13,8 +13,14 @@ export class CategoriesController {
     return this.categoryService.createCategory(dto);
   }
 
+  @Get()
+  getAllCategories() {
+    return this.categoryService.getAllCategories();
+  }
+
   @Get('/:url')
   getByUrl(@Param('url') url: string) {
+    console.log({ url });
     return this.categoryService.getCategoryByUrl(url);
   }
 }

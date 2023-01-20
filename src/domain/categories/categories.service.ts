@@ -24,6 +24,7 @@ export class CategoriesService {
   }
 
   async getCategoryByUrl(url: string) {
+    console.log(url);
     return await this.categoryRepostitory.findOne({ where: { url } });
   }
 }

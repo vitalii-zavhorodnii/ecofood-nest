@@ -7,7 +7,7 @@ import {
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Category } from 'categories/models/categories.model';
+import { Category } from 'domain/categories/models/categories.model';
 import { ProductsCategories } from './products-categories.model';
 
 interface ProductCreationAttrs {

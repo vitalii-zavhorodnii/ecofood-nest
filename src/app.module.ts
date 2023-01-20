@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 
-import { CategoriesModule } from './categories/categories.module';
-import { ProductsModule } from './products/products.module';
+import { CategoriesModule } from 'domain/categories/categories.module';
+import { ProductsModule } from 'domain/products/products.module';
 
-import { Product } from './products/models/products.model';
-import { Category } from 'categories/models/categories.model';
-import { ProductsCategories } from 'products/models/products-categories.model';
+import { Product } from 'domain/products/models/products.model';
+import { Category } from 'domain/categories/models/categories.model';
+import { ProductsCategories } from 'domain/products/models/products-categories.model';
 
 @Module({
   controllers: [],

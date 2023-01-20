@@ -7,8 +7,8 @@ import {
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Product } from 'products/models/products.model';
-import { ProductsCategories } from 'products/models/products-categories.model';
+import { Product } from 'domain/products/models/products.model';
+import { ProductsCategories } from 'domain/products/models/products-categories.model';
 
 @Table({ tableName: 'categories' })
 export class Category extends Model<Category> {

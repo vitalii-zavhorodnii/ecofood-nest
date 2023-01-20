@@ -4,9 +4,9 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { CategoriesService } from './categories.service';
 import { CategoriesController } from './categories.controller';
 
-import { Product } from 'products/models/products.model';
-import { ProductsCategories } from 'products/models/products-categories.model';
-import { Category } from 'categories/models/categories.model';
+import { Product } from 'domain/products/models/products.model';
+import { ProductsCategories } from 'domain/products/models/products-categories.model';
+import { Category } from 'domain/categories/models/categories.model';
 
 @Module({
   providers: [CategoriesService],
