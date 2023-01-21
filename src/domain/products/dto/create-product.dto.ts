@@ -9,9 +9,18 @@ export class CreateProductDto {
   })
   readonly title: string;
 
-  @ApiProperty({ example: 'Tasty dish', description: 'Product description' })
+  @ApiProperty({
+    example: 'Tasty dish for you',
+    description: 'Product description',
+  })
   @IsString({ message: 'Field "description" must be a string' })
   readonly description: string;
+
+  @ApiProperty({ example: 'cherry-bowl', description: 'URL for product' })
+  @Length(1, 100, {
+    message: 'Field required to be 1-100 symbols length',
+  })
+  readonly url: string;
 
   @ApiProperty({ example: 4, description: 'ID of measure for product' })
   @IsNumber({ allowNaN: false }, { message: 'Field "measure_id" is required' })

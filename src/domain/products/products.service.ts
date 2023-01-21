@@ -16,11 +16,17 @@ export class ProductsService {
   }
 
   async getAllProducts() {
-    return await this.productsRepository.findAll();
+    return await this.productsRepository.findAll({
+      where: {
+        in_stock: true,
+      },
+      include: { all: true },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
   }
 
   async getProductByID(id: number) {
-    const product = await this.productsRepository.findByPk(id);
+    const product = await this.productsRepository.findByPk(id, {});
     return product ?? null;
   }
 }

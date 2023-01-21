@@ -91,7 +91,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     description: 'Is product in stock',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.BOOLEAN,
     defaultValue: true,
   })
   in_stock: boolean;

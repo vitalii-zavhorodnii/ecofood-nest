@@ -2,11 +2,12 @@ import { Controller, Body, Param, Get, Post, UsePipes } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
+
+import { ValidationPipe } from 'pipes/validation.pipe';
 
 import { Product } from './models/products.model';
 
-import { ValidationPipe } from 'pipes/validation.pipe';
+import { CreateProductDto } from './dto/create-product.dto';
 
 @ApiTags('Products')
 @Controller('api/products')
@@ -16,20 +17,22 @@ export class ProductsController {
   @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({ status: 200, type: [Product] })
   @Get('')
-  public getAllProducts() {
+  public async getAllProducts() {
     return this.productsService.getAllProducts();
   }
 
   @ApiOperation({ summary: 'Create new product' })
+  @ApiResponse({ status: 200, type: Product })
   @UsePipes(ValidationPipe)
   @Post('')
-  public create(@Body() dto: CreateProductDto) {
+  public async create(@Body() dto: CreateProductDto) {
     return this.productsService.createProduct(dto);
   }
 
   @ApiOperation({ summary: 'Get product details by ID' })
+  @ApiResponse({ status: 200, type: Product })
   @Get('/:id')
-  public getProductByID(@Param('id') id: number) {
+  public async getProductByID(@Param('id') id: number) {
     return this.productsService.getProductByID(id);
   }
 }
