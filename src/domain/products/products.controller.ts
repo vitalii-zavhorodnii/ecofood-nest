@@ -1,4 +1,13 @@
-import { Controller, Body, Param, Get, Post, UsePipes } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Param,
+  Req,
+  Get,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
+import { Request } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ProductsService } from './products.service';
@@ -34,5 +43,14 @@ export class ProductsController {
   @Get('/:id')
   public async getProductByID(@Param('id') id: number) {
     return this.productsService.getProductByID(id);
+  }
+
+  @ApiOperation({ summary: 'Get product details by ID' })
+  @ApiResponse({ status: 200, type: Product })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Get('/with-url/:url')
+  public async getProductByUrl(@Req() req: Request) {
+    const { url } = req.params;
+    return this.productsService.getProductByUrl(url);
   }
 }
