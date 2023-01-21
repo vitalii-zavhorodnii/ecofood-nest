@@ -48,7 +48,7 @@ export class ProductsController {
   @ApiOperation({ summary: 'Get product details by ID' })
   @ApiResponse({ status: 200, type: Product })
   @ApiResponse({ status: 404, description: 'Not Found' })
-  @Get('/with-url/:url')
+  @Get('/by-url/:url')
   public async getProductByUrl(@Req() req: Request) {
     const { url } = req.params;
     return this.productsService.getProductByUrl(url);
