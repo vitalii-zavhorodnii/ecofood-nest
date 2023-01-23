@@ -6,28 +6,28 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { Category } from 'domain/categories/models/categories.model';
 import { Product } from 'domain/products/models/products.model';
+import { Category } from 'domain/categories/models/categories.model';
+
+interface CreationAttrs {
+  productId: number;
+  categoryId: number;
+}
 
 @Table({ tableName: 'products_categories', createdAt: false, updatedAt: false })
-export class ProductsCategories extends Model<ProductsCategories> {
-  @Column({
-    type: DataType.INTEGER,
-    unique: true,
-    autoIncrement: true,
-    primaryKey: true,
-  })
-  id: number;
-
+export class ProductsCategories extends Model<
+  ProductsCategories,
+  CreationAttrs
+> {
   @ForeignKey(() => Product)
   @Column({
     type: DataType.INTEGER,
   })
-  productId: number;
+  declare productId: number;
 
   @ForeignKey(() => Category)
   @Column({
     type: DataType.INTEGER,
   })
-  categoryId: number;
+  declare categoryId: number;
 }

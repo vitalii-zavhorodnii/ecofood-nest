@@ -10,8 +10,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Product } from 'domain/products/models/products.model';
 import { ProductsCategories } from 'domain/products/models/products-categories.model';
 
+interface CategoryCreationAttrs {
+  title: string;
+  url: string;
+}
+
 @Table({ tableName: 'categories' })
-export class Category extends Model<Category> {
+export class Category extends Model<Category, CategoryCreationAttrs> {
   @ApiProperty({ example: 1, description: 'Unique ID of product' })
   @Column({
     type: DataType.INTEGER,
@@ -20,6 +25,9 @@ export class Category extends Model<Category> {
     primaryKey: true,
   })
   id: number;
+
+  @ApiProperty({ example: true, description: 'Is category active' })
+  is_active: boolean = false;
 
   @ApiProperty({ example: 'banana', description: 'Unique url of product' })
   @Column({

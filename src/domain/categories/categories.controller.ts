@@ -19,7 +19,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from './models/categories.model';
 
 @ApiTags('Categories')
-@Controller('api/categories')
+@Controller('categories')
 export class CategoriesController {
   constructor(private categoryService: CategoriesService) {}
 

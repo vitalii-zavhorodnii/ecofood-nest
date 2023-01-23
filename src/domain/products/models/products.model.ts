@@ -12,19 +12,23 @@ import { ProductsCategories } from './products-categories.model';
 
 interface ProductCreationAttrs {
   title: string;
-  description: string;
+  url: string;
+  measure_id: number;
 }
 
 @Table({ tableName: 'products' })
 export class Product extends Model<Product, ProductCreationAttrs> {
-  @ApiProperty({ example: 1, description: 'Unique ID of product' })
+  @ApiProperty({
+    example: 1,
+    description: 'Unique ID of product',
+  })
   @Column({
     type: DataType.INTEGER,
     unique: true,
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  declare id: number;
 
   @ApiProperty({ example: 'banana', description: 'Unique url of product' })
   @Column({
@@ -32,14 +36,14 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     unique: true,
     allowNull: false,
   })
-  url: string;
+  declare url: string;
 
   @ApiProperty({ example: 'Banana', description: 'Product title' })
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  title: string;
+  declare title: string;
 
   @ApiProperty({
     example: 'Tasty for monkeys',
@@ -48,7 +52,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   @Column({
     type: DataType.STRING,
   })
-  description: string;
+  declare description: string;
 
   @ApiProperty({
     example: 'image.jpg',
@@ -57,7 +61,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   @Column({
     type: DataType.STRING,
   })
-  image: string;
+  declare image: string;
 
   @ApiProperty({
     example: 'image.jpg',
@@ -66,7 +70,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   @Column({
     type: DataType.STRING,
   })
-  thumb: string;
+  declare thumb: string;
 
   @ApiProperty({
     example: 400,
@@ -75,7 +79,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   @Column({
     type: DataType.INTEGER,
   })
-  price: number;
+  declare price: number;
 
   @ApiProperty({
     example: 'delivery 1-2 days',
@@ -84,7 +88,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   @Column({
     type: DataType.STRING,
   })
-  delivery_text: string;
+  declare delivery_text: string;
 
   @ApiProperty({
     example: true,
@@ -94,7 +98,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     type: DataType.BOOLEAN,
     defaultValue: true,
   })
-  in_stock: boolean;
+  declare in_stock: boolean;
 
   @ApiProperty({
     example: 23,
@@ -103,10 +107,10 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   @Column({
     type: DataType.INTEGER,
   })
-  measure_id: number;
+  declare measure_id: number;
 
   @BelongsToMany(() => Category, () => ProductsCategories)
-  categories: Category[];
+  declare categories: Category[];
 
   // @ApiProperty({
   //   example: [1, 5, 7],

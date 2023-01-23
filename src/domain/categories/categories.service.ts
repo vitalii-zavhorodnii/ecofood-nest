@@ -16,7 +16,13 @@ export class CategoriesService {
   }
 
   async getAllCategories() {
-    return await this.categoryRepostitory.findAll();
+    return await this.categoryRepostitory.findAll({
+      where: {
+        is_active: true,
+      },
+      include: { all: true },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
   }
 
   async getCategoryById(id: number) {

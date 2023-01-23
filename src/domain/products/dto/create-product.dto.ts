@@ -1,28 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString, Length } from 'class-validator';
 
-export class CreateProductDto {
-  @ApiProperty({ example: 'Cherry Bowl', description: 'Product title' })
-  @IsString({ message: 'Field "title" must be a string' })
+import { UpdateProductDto } from './update-product.dto';
+
+export class CreateProductDto extends UpdateProductDto {
+  @ApiProperty({
+    example: 'Cherry Bowl',
+    description: 'Product title',
+  })
+  @IsString({ message: 'must be a string' })
   @Length(1, 100, {
     message: 'Field "title" reuired to be 1-100 symbols length',
   })
   readonly title: string;
 
   @ApiProperty({
-    example: 'Tasty dish for you',
-    description: 'Product description',
+    example: 'cherry-bowl',
+    description: 'URL for product',
   })
-  @IsString({ message: 'Field "description" must be a string' })
-  readonly description: string;
-
-  @ApiProperty({ example: 'cherry-bowl', description: 'URL for product' })
   @Length(1, 100, {
-    message: 'Field required to be 1-100 symbols length',
+    message: 'required to be 1-100 symbols length',
   })
   readonly url: string;
 
-  @ApiProperty({ example: 4, description: 'ID of measure for product' })
-  @IsNumber({ allowNaN: false }, { message: 'Field "measure_id" is required' })
+  @ApiProperty({
+    example: 4,
+    description: 'ID of measure for product',
+  })
+  @IsNumber({ allowNaN: false }, { message: 'must be a number' })
   readonly measure_id: number;
 }
