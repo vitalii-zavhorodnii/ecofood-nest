@@ -6,6 +6,7 @@ import {
   Body,
   Req,
   UsePipes,
+  Delete,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
@@ -36,6 +37,13 @@ export class CategoriesController {
   @Get('')
   public async getAllCategories(): Promise<Category[]> {
     return this.categoryService.getAllCategories();
+  }
+
+  @ApiOperation({ summary: 'Delete category' })
+  @ApiResponse({ status: 204 })
+  @Delete('/:id')
+  public async delete(@Param('id') id: number) {
+    return this.categoryService.deleteCategory(id);
   }
 
   // @ApiOperation({ summary: 'Get product details by ID' })

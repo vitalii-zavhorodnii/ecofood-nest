@@ -37,4 +37,8 @@ export class CategoriesService {
 
     return category;
   }
+
+  async deleteCategory(id: number) {
+    await this.categoryRepostitory.destroy({ where: { id } });
+  }
 }
