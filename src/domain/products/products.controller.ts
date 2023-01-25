@@ -6,6 +6,7 @@ import {
   Get,
   Post,
   Put,
+  Delete,
   UsePipes,
 } from '@nestjs/common';
 import { Request } from 'express';
@@ -58,6 +59,14 @@ export class ProductsController {
   @Get('/:id')
   public async getProductById(@Param('id') id: number) {
     return this.productsService.getById(id);
+  }
+
+  @ApiOperation({ summary: 'Delete product' })
+  @ApiResponse({ status: 204 })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Delete('/:id')
+  public async deleteProduct(@Param('id') id: number) {
+    return this.productsService.delete(id);
   }
 
   @ApiOperation({ summary: 'Get product details by ID' })

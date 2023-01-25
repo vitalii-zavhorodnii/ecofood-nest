@@ -75,4 +75,8 @@ export class ProductsService {
 
     return product;
   }
+
+  async delete(id: number) {
+    await this.productsRepository.destroy({ where: { id } });
+  }
 }
