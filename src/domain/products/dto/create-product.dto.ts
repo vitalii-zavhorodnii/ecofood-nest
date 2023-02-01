@@ -3,6 +3,8 @@ import { IsNumber, IsString, Length } from 'class-validator';
 
 import { UpdateProductDto } from './update-product.dto';
 
+import { isUnique } from 'validations/unique.validation';
+
 export class CreateProductDto extends UpdateProductDto {
   @ApiProperty({
     example: 'Cherry Bowl',
@@ -21,6 +23,7 @@ export class CreateProductDto extends UpdateProductDto {
   @Length(1, 100, {
     message: 'required to be 1-100 symbols length',
   })
+  @isUnique()
   readonly url: string;
 
   @ApiProperty({

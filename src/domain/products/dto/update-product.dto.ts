@@ -50,18 +50,6 @@ export class UpdateProductDto {
   readonly in_stock?: boolean = false;
 
   @ApiProperty({
-    example: [1, 2, 3],
-    description: 'Array of categories IDs',
-    required: false,
-  })
-  @IsOptional()
-  @IsNumber(
-    { allowNaN: false },
-    { each: true, message: 'array must contain only NUMBER types' },
-  )
-  readonly categories?: number[];
-
-  @ApiProperty({
     example: 'img.jpg',
     description: 'ACCEPT ONLY STRING - INDEV',
     required: false,

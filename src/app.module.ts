@@ -8,6 +8,7 @@ import { ProductsModule } from 'domain/products/products.module';
 import { Product } from 'domain/products/models/products.model';
 import { Category } from 'domain/categories/models/categories.model';
 import { ProductsCategories } from 'domain/products/models/products-categories.model';
+import { MeasuresModule } from './domain/measures/measures.module';
 
 @Module({
   controllers: [],
@@ -28,6 +29,7 @@ import { ProductsCategories } from 'domain/products/models/products-categories.m
     }),
     ProductsModule,
     CategoriesModule,
+    MeasuresModule,
   ],
 })
 export class AppModule {}

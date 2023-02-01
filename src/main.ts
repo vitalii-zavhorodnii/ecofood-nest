@@ -1,8 +1,9 @@
 import { NestFactory } from '@nestjs/core';
+import { useContainer } from 'class-validator';
 
 import { AppModule } from './app.module';
 
-import { ValidationPipe } from './pipes/validation.pipe';
+import { DtoValidationPipe } from './pipes/dto-validation.pipe';
 
 import { SwaggerHelper } from 'helpers/swagger.helper';
 
@@ -10,7 +11,9 @@ import { SwaggerHelper } from 'helpers/swagger.helper';
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new DtoValidationPipe());
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const swagger = new SwaggerHelper();
   swagger.init(app);

@@ -13,7 +13,7 @@ import { Request } from 'express';
 
 import { CategoriesService } from './categories.service';
 
-import { ValidationPipe } from 'pipes/validation.pipe';
+import { DtoValidationPipe } from 'pipes/dto-validation.pipe';
 
 import { CreateCategoryDto } from './dto/create-category.dto';
 
@@ -27,7 +27,7 @@ export class CategoriesController {
   @ApiOperation({ summary: 'Create new category' })
   @ApiResponse({ status: 200, type: Category })
   @Post('')
-  @UsePipes(ValidationPipe)
+  @UsePipes(DtoValidationPipe)
   public async create(@Body() dto: CreateCategoryDto): Promise<Category> {
     return this.categoryService.createCategory(dto);
   }

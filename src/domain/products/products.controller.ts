@@ -14,12 +14,13 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ProductsService } from './products.service';
 
-import { ValidationPipe } from 'pipes/validation.pipe';
+import { DtoValidationPipe } from 'pipes/dto-validation.pipe';
 
 import { Product } from './models/products.model';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { AddProductToCategoryDto } from './dto/add-product-to-category.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -28,7 +29,8 @@ export class ProductsController {
 
   @ApiOperation({ summary: 'Create new product' })
   @ApiResponse({ status: 200, type: Product })
-  @UsePipes(ValidationPipe)
+  @ApiResponse({ status: 400, description: 'URL must be unique' })
+  @UsePipes(DtoValidationPipe)
   @Post('')
   public async createProduct(@Body() dto: CreateProductDto) {
     return this.productsService.create(dto);
@@ -37,7 +39,7 @@ export class ProductsController {
   @ApiOperation({ summary: 'Update product data by ID' })
   @ApiResponse({ status: 200, type: Product })
   @ApiResponse({ status: 404, description: 'Not Found' })
-  @UsePipes(ValidationPipe)
+  @UsePipes(DtoValidationPipe)
   @Put('/:id')
   public async updateProduct(
     @Param('id') id: number,
@@ -76,5 +78,14 @@ export class ProductsController {
   public async getProductByUrl(@Req() req: Request) {
     const { url } = req.params;
     return this.productsService.getByUrl(url);
+  }
+
+  @ApiOperation({ summary: 'Add product to category' })
+  @ApiResponse({ status: 204 }) // question
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Post('/add-category')
+  public async putProductInCategory(@Body() body: AddProductToCategoryDto) {
+    console.log({ body });
+    return this.productsService.addProductToCategory(body);
   }
 }

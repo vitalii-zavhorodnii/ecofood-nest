@@ -9,9 +9,12 @@ import { Product } from 'domain/products/models/products.model';
 import { ProductsCategories } from 'domain/products/models/products-categories.model';
 import { Category } from 'domain/categories/models/categories.model';
 
+import { UniqueValidation } from 'validations/unique.validation';
+import { IndexExistsValidation } from 'validations/index-exists.validation';
+
 @Module({
   controllers: [ProductsController],
-  providers: [ProductsService],
+  providers: [ProductsService, UniqueValidation, IndexExistsValidation],
   exports: [ProductsService],
   imports: [
     SequelizeModule.forFeature([Product, Category, ProductsCategories]),

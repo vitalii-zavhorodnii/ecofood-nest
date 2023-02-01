@@ -2,12 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { Product } from './models/products.model';
-import { Category } from 'domain/categories/models/categories.model';
 import { ProductsCategories } from './models/products-categories.model';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { AddCategoryToProductDto } from './dto/add-product-to-category.dto';
+import { AddProductToCategoryDto } from './dto/add-product-to-category.dto';
+import { FindByQueryDto } from './dto/find-by-query.dto';
 
 @Injectable()
 export class ProductsService {
@@ -21,26 +21,20 @@ export class ProductsService {
     return await this.productsRepository.create(dto);
   }
 
-  // async update(id: number, dto: UpdateProductDto) {
-  async update(id: number, dto: any) {
-    // refactor
+  async delete(id: number) {
+    await this.productsRepository.destroy({ where: { id } });
+  }
+
+  async update(id: number, dto: UpdateProductDto) {
     const product = await this.productsRepository.update(dto, {
       where: { id },
     });
 
-    if (dto.categories?.length) {
-      await this.productsCategoriesRepository.destroy({
-        where: { productId: id },
-      });
-      const bulkDto = dto.categories.map((categoryId: number) => ({
-        productId: id,
-        categoryId,
-      }));
-
-      await this.productsCategoriesRepository.bulkCreate(bulkDto);
-    }
-
     return product;
+  }
+
+  async getByQuery(dto: FindByQueryDto): Promise<Product> {
+    return await this.productsRepository.findOne({ where: { ...dto } });
   }
 
   async getAll(): Promise<Product[]> {
@@ -76,7 +70,9 @@ export class ProductsService {
     return product;
   }
 
-  async delete(id: number) {
-    await this.productsRepository.destroy({ where: { id } });
+  async addProductToCategory(dto: AddProductToCategoryDto): Promise<void> {
+    const result = await this.productsCategoriesRepository.create(dto);
+
+    console.log({ result });
   }
 }

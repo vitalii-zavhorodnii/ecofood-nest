@@ -35,6 +35,10 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     type: DataType.STRING,
     unique: true,
     allowNull: false,
+    set(value: string) {
+      const transformedText = value.toLowerCase();
+      this.setDataValue('url', transformedText);
+    },
   })
   declare url: string;
 
