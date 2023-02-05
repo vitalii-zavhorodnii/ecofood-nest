@@ -4,11 +4,13 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 import { CategoriesModule } from 'domain/categories/categories.module';
 import { ProductsModule } from 'domain/products/products.module';
+import { MeasuresModule } from './domain/measures/measures.module';
 
 import { Product } from 'domain/products/models/products.model';
 import { Category } from 'domain/categories/models/categories.model';
 import { ProductsCategories } from 'domain/products/models/products-categories.model';
-import { MeasuresModule } from './domain/measures/measures.module';
+import { Measure } from 'domain/measures/models/measures.models';
+import { ProductsSuggested } from 'domain/products/models/products-suggested.model';
 
 @Module({
   controllers: [],
@@ -24,7 +26,13 @@ import { MeasuresModule } from './domain/measures/measures.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [Product, Category, ProductsCategories],
+      models: [
+        Product,
+        Category,
+        ProductsCategories,
+        ProductsSuggested,
+        Measure,
+      ],
       autoLoadModels: true,
     }),
     ProductsModule,

@@ -3,7 +3,7 @@ import { IsNumber, IsString, Length } from 'class-validator';
 
 import { UpdateProductDto } from './update-product.dto';
 
-import { isUnique } from 'validations/unique.validation';
+import { isUnique } from 'domain/products/validations/unique.validation';
 
 export class CreateProductDto extends UpdateProductDto {
   @ApiProperty({

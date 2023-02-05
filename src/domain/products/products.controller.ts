@@ -15,12 +15,14 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 
 import { DtoValidationPipe } from 'pipes/dto-validation.pipe';
+import { IndexValidationPipe } from './pipes/index-validation.pipe';
 
 import { Product } from './models/products.model';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { AddProductToCategoryDto } from './dto/add-product-to-category.dto';
+import { ProductSuggestionDto } from './dto/product-suggestion.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -36,13 +38,21 @@ export class ProductsController {
     return this.productsService.create(dto);
   }
 
+  @ApiOperation({ summary: 'Delete product' })
+  @ApiResponse({ status: 204 })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Delete('/:id')
+  public async deleteProduct(@Param('id', IndexValidationPipe) id: number) {
+    return this.productsService.delete(id);
+  }
+
   @ApiOperation({ summary: 'Update product data by ID' })
   @ApiResponse({ status: 200, type: Product })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @UsePipes(DtoValidationPipe)
   @Put('/:id')
   public async updateProduct(
-    @Param('id') id: number,
+    @Param('id', IndexValidationPipe) id: number,
     @Body() dto: UpdateProductDto,
   ) {
     return this.productsService.update(id, dto);
@@ -59,16 +69,8 @@ export class ProductsController {
   @ApiResponse({ status: 200, type: Product })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @Get('/:id')
-  public async getProductById(@Param('id') id: number) {
+  public async getProductById(@Param('id', IndexValidationPipe) id: number) {
     return this.productsService.getById(id);
-  }
-
-  @ApiOperation({ summary: 'Delete product' })
-  @ApiResponse({ status: 204 })
-  @ApiResponse({ status: 404, description: 'Not Found' })
-  @Delete('/:id')
-  public async deleteProduct(@Param('id') id: number) {
-    return this.productsService.delete(id);
   }
 
   @ApiOperation({ summary: 'Get product details by ID' })
@@ -85,7 +87,22 @@ export class ProductsController {
   @ApiResponse({ status: 404, description: 'Not Found' })
   @Post('/add-category')
   public async putProductInCategory(@Body() body: AddProductToCategoryDto) {
-    console.log({ body });
     return this.productsService.addProductToCategory(body);
+  }
+
+  @ApiOperation({ summary: 'Add product to suggested' })
+  @ApiResponse({ status: 200, type: Product }) // question
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Post('/add-suggested')
+  public async addProductToSuggested(@Body() body: ProductSuggestionDto) {
+    return this.productsService.addProductToSuggested(body);
+  }
+
+  @ApiOperation({ summary: 'Remove product from suggested' })
+  @ApiResponse({ status: 200, type: Product }) // question
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Delete('/remove-suggested')
+  public async removeProductFromSuggested(@Body() body: ProductSuggestionDto) {
+    return this.productsService.removeProductFromSuggested(body);
   }
 }

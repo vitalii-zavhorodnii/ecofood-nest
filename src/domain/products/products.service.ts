@@ -1,13 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
+import { CategoriesService } from 'domain/categories/categories.service';
+
 import { Product } from './models/products.model';
+import { Category } from 'domain/categories/models/categories.model';
+import { Measure } from 'domain/measures/models/measures.models';
 import { ProductsCategories } from './models/products-categories.model';
+import { ProductsSuggested } from './models/products-suggested.model';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { AddProductToCategoryDto } from './dto/add-product-to-category.dto';
 import { FindByQueryDto } from './dto/find-by-query.dto';
+import { ProductSuggestionDto } from './dto/product-suggestion.dto';
 
 @Injectable()
 export class ProductsService {
@@ -15,6 +21,9 @@ export class ProductsService {
     @InjectModel(Product) private productsRepository: typeof Product,
     @InjectModel(ProductsCategories)
     private productsCategoriesRepository: typeof ProductsCategories,
+    @InjectModel(ProductsSuggested)
+    private productsSuggestedRepository: typeof ProductsSuggested,
+    private categoriesService: CategoriesService,
   ) {}
 
   async create(dto: CreateProductDto): Promise<Product> {
@@ -23,14 +32,28 @@ export class ProductsService {
 
   async delete(id: number) {
     await this.productsRepository.destroy({ where: { id } });
+    await this.productsSuggestedRepository.destroy({
+      where: { suggestedId: id },
+    });
+    await this.productsSuggestedRepository.destroy({
+      where: { productId: id },
+    });
+    await this.productsCategoriesRepository.destroy({
+      where: {
+        productId: id,
+      },
+    });
   }
 
-  async update(id: number, dto: UpdateProductDto) {
+  async update(id: number, dto: UpdateProductDto): Promise<Product> {
     const product = await this.productsRepository.update(dto, {
       where: { id },
+      returning: true,
     });
 
-    return product;
+    const result = product[1][0].dataValues;
+
+    return result;
   }
 
   async getByQuery(dto: FindByQueryDto): Promise<Product> {
@@ -42,13 +65,27 @@ export class ProductsService {
       where: {
         in_stock: true,
       },
-      include: { all: true },
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      include: [
+        {
+          model: Category,
+          attributes: ['id', 'title', 'url'],
+        },
+        {
+          model: Measure,
+          attributes: ['id', 'title'],
+        },
+        {
+          model: Product,
+          attributes: ['id', 'title', 'url'],
+        },
+      ],
+      attributes: { exclude: ['createdAt', 'updatedAt', 'measure_id'] },
     });
   }
 
   async getById(id: number): Promise<Product> {
     const product = await this.productsRepository.findByPk(id, {
+      include: { all: true },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
 
@@ -71,8 +108,38 @@ export class ProductsService {
   }
 
   async addProductToCategory(dto: AddProductToCategoryDto): Promise<void> {
-    const result = await this.productsCategoriesRepository.create(dto);
+    const product = await this.getById(dto.productId);
 
-    console.log({ result });
+    if (!product)
+      throw new NotFoundException(
+        `There's no product with ID - ${dto.productId}`,
+      );
+
+    const category = await this.categoriesService.getCategoryById(
+      dto.categoryId,
+    );
+
+    if (!category)
+      throw new NotFoundException(
+        `There's no category with ID - ${dto.categoryId}`,
+      );
+
+    await this.productsCategoriesRepository.create(dto);
+  }
+
+  async addProductToSuggested(dto: ProductSuggestionDto): Promise<Product> {
+    await this.productsSuggestedRepository.create(dto);
+
+    return await this.productsRepository.findByPk(dto.productId);
+  }
+
+  async removeProductFromSuggested(dto: ProductSuggestionDto) {
+    await this.productsCategoriesRepository.destroy({
+      where: {
+        ...dto,
+      },
+    });
+
+    return await this.productsRepository.findByPk(dto.productId);
   }
 }

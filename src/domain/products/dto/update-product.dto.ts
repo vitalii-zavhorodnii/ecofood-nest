@@ -2,35 +2,35 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString, Length, IsOptional } from 'class-validator';
 
 export class UpdateProductDto {
-  @IsOptional()
   @IsString({ message: 'must be a string' })
   @Length(1, 100, {
     message: 'Field "title" reuired to be 1-100 symbols length',
   })
+  @IsOptional()
   readonly title?: string;
 
-  @IsOptional()
   @Length(1, 100, {
     message: 'required to be 1-100 symbols length',
   })
+  @IsOptional()
   readonly url?: string;
 
-  @IsOptional()
   @IsNumber({ allowNaN: false }, { message: 'must be a number' })
-  readonly measure_id?: number;
+  @IsOptional()
+  readonly measure_id: number;
 
   @ApiProperty({
     example: 'Tasty dish for you',
     description: 'Product description',
     required: false,
   })
-  @IsOptional()
   @IsString({ message: 'must be a string' })
+  @IsOptional()
   readonly description?: string;
 
   @ApiProperty({ example: 14, description: 'Product price', required: false })
-  @IsOptional()
   @IsNumber({ allowNaN: false }, { message: 'must be a number' })
+  @IsOptional()
   readonly price?: number;
 
   @ApiProperty({

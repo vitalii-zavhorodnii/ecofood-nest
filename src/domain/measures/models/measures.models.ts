@@ -1,0 +1,49 @@
+import { Column, DataType, Model, Table, HasMany } from 'sequelize-typescript';
+import { ApiProperty } from '@nestjs/swagger';
+
+interface MeasureCreationAttrs {
+  title: string;
+  shortcut: string;
+  code: string;
+}
+
+@Table({ tableName: 'measures' })
+export class Measure extends Model<Measure, MeasureCreationAttrs> {
+  @ApiProperty({
+    example: 1,
+    description: 'Unique ID of measure',
+  })
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  id: number;
+
+  @ApiProperty({ example: 'Liter', description: 'Measure title' })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  title: string;
+
+  @ApiProperty({ example: 'l.', description: 'Measure shortcut name' })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  shortcut: string;
+
+  @ApiProperty({
+    example: 'liter',
+    description: 'Measure code for unique values',
+  })
+  @Column({
+    type: DataType.STRING,
+    unique: true,
+    allowNull: false,
+    validate: {},
+  })
+  code: string;
+}

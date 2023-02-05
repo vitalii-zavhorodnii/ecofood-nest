@@ -3,7 +3,7 @@ import { useContainer } from 'class-validator';
 
 import { AppModule } from './app.module';
 
-import { DtoValidationPipe } from './pipes/dto-validation.pipe';
+import { DtoValidationPipe } from 'pipes/dto-validation.pipe';
 
 import { SwaggerHelper } from 'helpers/swagger.helper';
 
