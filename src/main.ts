@@ -8,7 +8,7 @@ import { DtoValidationPipe } from 'pipes/dto-validation.pipe';
 import { SwaggerHelper } from 'helpers/swagger.helper';
 
 (async () => {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: false });
 
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new DtoValidationPipe());

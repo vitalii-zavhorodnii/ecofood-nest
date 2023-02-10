@@ -86,8 +86,19 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   })
   @Column({
     type: DataType.INTEGER,
+    defaultValue: null,
   })
   price: number;
+
+  // @ApiProperty({
+  //   example: 400,
+  //   description: 'Product price',
+  // })
+  // @Column({
+  //   type: DataType.INTEGER,
+  //   defaultValue: null,
+  // })
+  // old_price: number;
 
   @ApiProperty({
     example: 'delivery 1-2 days',
@@ -107,6 +118,27 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     defaultValue: true,
   })
   in_stock: boolean;
+
+  // @ApiProperty({
+  //   example: true,
+  //   description: 'Size of one portion',
+  // })
+  // @Column({
+  //   type: DataType.INTEGER,
+  //   defaultValue: 0,
+  // })
+  // size: number;
+
+  // composition
+  // rating
+  // package
+  // country
+  // brand
+  // product status
+  // vitamins
+  // minerals
+  // customerReviews
+  // collection
 
   @ApiProperty({
     example: 1,
@@ -129,6 +161,8 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     foreignKey: 'productId',
   })
   suggested: Product[];
+
+  
 
   // @ApiProperty({
   //   example: [1, 5, 7],

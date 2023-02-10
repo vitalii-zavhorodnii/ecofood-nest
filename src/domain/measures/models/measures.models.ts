@@ -21,14 +21,14 @@ export class Measure extends Model<Measure, MeasureCreationAttrs> {
   })
   id: number;
 
-  @ApiProperty({ example: 'Liter', description: 'Measure title' })
+  @ApiProperty({ example: 'Kilogram', description: 'Measure title' })
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
   title: string;
 
-  @ApiProperty({ example: 'l.', description: 'Measure shortcut name' })
+  @ApiProperty({ example: 'kg', description: 'Measure shortcut name' })
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -36,7 +36,7 @@ export class Measure extends Model<Measure, MeasureCreationAttrs> {
   shortcut: string;
 
   @ApiProperty({
-    example: 'liter',
+    example: 'kilo',
     description: 'Measure code for unique values',
   })
   @Column({
