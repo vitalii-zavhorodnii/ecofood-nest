@@ -46,13 +46,13 @@ export class CategoriesController {
     return this.categoryService.deleteCategory(id);
   }
 
-  // @ApiOperation({ summary: 'Get product details by ID' })
-  // @ApiResponse({ status: 200, type: Category })
-  // @ApiResponse({ status: 404, description: 'Not Found' })
-  // @Get('/:id')
-  // public async getProductByID(@Param('id') id: number) {
-  //   return this.categoryService.getProductByID(id);
-  // }
+  @ApiOperation({ summary: 'Get product details by ID' })
+  @ApiResponse({ status: 200, type: Category })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Get('/:id')
+  public async getProductByID(@Param('id') id: number) {
+    return this.categoryService.getCategoryById(id);
+  }
 
   @ApiOperation({ summary: 'Get category data by URL' })
   @ApiResponse({ status: 200, type: Category })

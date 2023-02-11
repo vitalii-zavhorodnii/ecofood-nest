@@ -84,9 +84,25 @@ export class ProductsService {
   }
 
   async getById(id: number): Promise<Product> {
-    const product = await this.productsRepository.findByPk(id, {
-      include: { all: true },
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    // const options = ;
+
+    const product = await this.productsRepository.findOne({
+      where: { id },
+      include: [
+        {
+          model: Category,
+          attributes: ['id', 'title', 'url'],
+        },
+        {
+          model: Measure,
+          attributes: ['id', 'title'],
+        },
+        {
+          model: Product,
+          attributes: ['id', 'title', 'url'],
+        },
+      ],
+      attributes: { exclude: ['createdAt', 'updatedAt', 'measure_id'] },
     });
 
     if (!product)

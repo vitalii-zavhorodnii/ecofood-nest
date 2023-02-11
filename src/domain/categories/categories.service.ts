@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { Category } from './models/categories.model';
+import { Measure } from 'domain/measures/models/measures.models';
+import { Product } from 'domain/products/models/products.model';
 
 import { CreateCategoryDto } from './dto/create-category.dto';
 
@@ -26,11 +28,34 @@ export class CategoriesService {
   }
 
   async getCategoryById(id: number) {
-    return await this.categoryRepostitory.findByPk(id);
+    return await this.categoryRepostitory.findByPk(id, {
+      include: [
+        {
+          model: Product,
+          attributes: ['id', 'title', 'url'],
+          include: [Measure, Category],
+        },
+      ],
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'measure_id'],
+      },
+    });
   }
 
   async getCategoryByUrl(url: string) {
-    const category = await this.categoryRepostitory.findOne({ where: { url } });
+    const category = await this.categoryRepostitory.findOne({
+      where: { url },
+      include: [
+        {
+          model: Product,
+          attributes: ['id', 'title', 'url'],
+          include: [Measure, Category],
+        },
+      ],
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'measure_id'],
+      },
+    });
 
     if (!category)
       throw new NotFoundException(`There's no category with URL - ${url}`);
