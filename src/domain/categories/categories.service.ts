@@ -22,7 +22,7 @@ export class CategoriesService {
       where: {
         is_active: true,
       },
-      include: { all: true },
+      // include: { all: true },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
   }
