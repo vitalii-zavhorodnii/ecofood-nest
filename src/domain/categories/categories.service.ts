@@ -22,7 +22,6 @@ export class CategoriesService {
       where: {
         is_active: true,
       },
-      // include: { all: true },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
   }
@@ -32,12 +31,24 @@ export class CategoriesService {
       include: [
         {
           model: Product,
-          attributes: ['id', 'title', 'url'],
-          include: [Measure, Category],
+          through: { attributes: [] },
+          attributes: ['id', 'title', 'url', 'image', 'thumb'],
+          include: [
+            {
+              model: Measure,
+              attributes: ['id', 'title', 'shortcut'],
+            },
+            {
+              model: Category,
+              through: { attributes: [] },
+              attributes: ['id', 'title', 'url'],
+            },
+          ],
         },
       ],
+
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'measure_id'],
+        exclude: ['createdAt', 'updatedAt'],
       },
     });
   }
