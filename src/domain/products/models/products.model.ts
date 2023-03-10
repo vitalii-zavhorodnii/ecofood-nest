@@ -6,6 +6,7 @@ import {
   BelongsToMany,
   ForeignKey,
   BelongsTo,
+  HasOne,
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -13,6 +14,8 @@ import { Category } from 'domain/categories/models/categories.model';
 import { Measure } from 'domain/measures/models/measures.models';
 import { ProductsCategories } from './products-categories.model';
 import { ProductsSuggested } from './products-suggested.model';
+import { Vitamin } from 'domain/vitamins/models/vitamins.model';
+import { ProductsVitamins } from './products-vitamins.model';
 
 interface ProductCreationAttrs {
   title: string;
@@ -72,15 +75,6 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   image: string;
 
   @ApiProperty({
-    example: 'image.jpg',
-    description: 'Product thumb',
-  })
-  @Column({
-    type: DataType.STRING,
-  })
-  thumb: string;
-
-  @ApiProperty({
     example: 400,
     description: 'Product price',
   })
@@ -90,15 +84,25 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   })
   price: number;
 
-  // @ApiProperty({
-  //   example: 400,
-  //   description: 'Product price',
-  // })
-  // @Column({
-  //   type: DataType.INTEGER,
-  //   defaultValue: null,
-  // })
-  // old_price: number;
+  @ApiProperty({
+    example: 500,
+    description: 'Old price',
+  })
+  @Column({
+    type: DataType.INTEGER,
+    defaultValue: null,
+  })
+  oldPrice: number;
+
+  @ApiProperty({
+    example: 500,
+    description: 'Size of package',
+  })
+  @Column({
+    type: DataType.INTEGER,
+    defaultValue: null,
+  })
+  size: number;
 
   @ApiProperty({
     example: 'delivery 1-2 days',
@@ -107,7 +111,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   @Column({
     type: DataType.STRING,
   })
-  delivery_text: string;
+  deliveryText: string;
 
   @ApiProperty({
     example: true,
@@ -117,17 +121,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     type: DataType.BOOLEAN,
     defaultValue: true,
   })
-  in_stock: boolean;
-
-  // @ApiProperty({
-  //   example: true,
-  //   description: 'Size of one portion',
-  // })
-  // @Column({
-  //   type: DataType.INTEGER,
-  //   defaultValue: 0,
-  // })
-  // size: number;
+  inStock: boolean;
 
   // composition
   // rating
@@ -135,7 +129,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   // country
   // brand
   // product status
-  // vitamins
+
   // minerals
   // customerReviews
   // collection
@@ -144,16 +138,16 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     example: 1,
     description: 'ID of measure',
   })
-  @ForeignKey(() => Measure)
-  @Column({
-    type: DataType.INTEGER,
+  @BelongsTo(() => Measure, 'measureId')
+  measure: Measure;
+
+  @BelongsToMany(() => Vitamin, () => ProductsVitamins)
+  vitamins: Vitamin[];
+
+  @BelongsToMany(() => Category, {
+    through: () => ProductsCategories,
+    foreignKey: 'productId',
   })
-  measure_id: number;
-
-  @BelongsTo(() => Measure)
-  measure: Category;
-
-  @BelongsToMany(() => Category, () => ProductsCategories)
   categories: Category[];
 
   @BelongsToMany(() => Product, {
@@ -161,16 +155,4 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     foreignKey: 'productId',
   })
   suggested: Product[];
-
-  
-
-  // @ApiProperty({
-  //   example: [1, 5, 7],
-  //   description: 'Array of IDs wich vitamins contain this product',
-  // })
-  // @Column({
-  //   type: DataType.ARRAY(DataType.INTEGER),
-  //   defaultValue: null,
-  // })
-  // vitamins: [number]; // array of IDs of vitamins number[]
 }

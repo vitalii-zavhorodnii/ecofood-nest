@@ -14,6 +14,9 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { AddProductToCategoryDto } from './dto/add-product-to-category.dto';
 import { FindByQueryDto } from './dto/find-by-query.dto';
 import { ProductSuggestionDto } from './dto/product-suggestion.dto';
+import { Vitamin } from 'domain/vitamins/models/vitamins.model';
+import { VitaminsProduct } from './dto/vitamins-product.dto';
+import { ProductsVitamins } from './models/products-vitamins.model';
 
 @Injectable()
 export class ProductsService {
@@ -23,6 +26,8 @@ export class ProductsService {
     private productsCategoriesRepository: typeof ProductsCategories,
     @InjectModel(ProductsSuggested)
     private productsSuggestedRepository: typeof ProductsSuggested,
+    @InjectModel(ProductsVitamins)
+    private productVitaminsRepository: typeof ProductsVitamins,
     private categoriesService: CategoriesService,
   ) {}
 
@@ -63,46 +68,70 @@ export class ProductsService {
   async getAll(): Promise<Product[]> {
     return await this.productsRepository.findAll({
       where: {
-        in_stock: true,
+        inStock: true,
       },
       include: [
         {
           model: Category,
           attributes: ['id', 'title', 'url'],
+          through: {
+            attributes: [],
+          },
         },
         {
           model: Measure,
-          attributes: ['id', 'title'],
+          attributes: ['id', 'title', 'shortcut'],
         },
         {
           model: Product,
           attributes: ['id', 'title', 'url'],
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: Vitamin,
+          attributes: ['id', 'shortcut', 'shape', 'color'],
+          through: {
+            attributes: [],
+          },
         },
       ],
-      attributes: { exclude: ['createdAt', 'updatedAt', 'measure_id'] },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'measureId'] },
     });
   }
 
   async getById(id: number): Promise<Product> {
-    // const options = ;
-
     const product = await this.productsRepository.findOne({
       where: { id },
       include: [
         {
           model: Category,
           attributes: ['id', 'title', 'url'],
+          through: {
+            attributes: [],
+          },
         },
         {
           model: Measure,
-          attributes: ['id', 'title'],
+          attributes: ['id', 'title', 'shortcut'],
         },
         {
           model: Product,
           attributes: ['id', 'title', 'url'],
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: Vitamin,
+          attributes: ['id', 'shortcut', 'shape', 'color'],
+          through: {
+            attributes: [],
+          },
         },
       ],
-      attributes: { exclude: ['createdAt', 'updatedAt', 'measure_id'] },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'measureId'] },
     });
 
     if (!product)
@@ -113,7 +142,7 @@ export class ProductsService {
 
   async getByUrl(url: string): Promise<Product> {
     const product = await this.productsRepository.findOne({
-      where: { url, in_stock: true },
+      where: { url, inStock: true },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
 
@@ -157,5 +186,15 @@ export class ProductsService {
     });
 
     return await this.productsRepository.findByPk(dto.productId);
+  }
+
+  async addVitaminToProduct(dto: VitaminsProduct) {
+    await this.productVitaminsRepository.create(dto);
+  }
+
+  async removeVitaminFromProduct(dto: VitaminsProduct) {
+    await this.productVitaminsRepository.destroy({
+      where: { ...dto },
+    });
   }
 }

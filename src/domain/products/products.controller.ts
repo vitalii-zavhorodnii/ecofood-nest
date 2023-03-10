@@ -23,6 +23,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { AddProductToCategoryDto } from './dto/add-product-to-category.dto';
 import { ProductSuggestionDto } from './dto/product-suggestion.dto';
+import { VitaminsProduct } from './dto/vitamins-product.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -99,10 +100,26 @@ export class ProductsController {
   }
 
   @ApiOperation({ summary: 'Remove product from suggested' })
-  @ApiResponse({ status: 200, type: Product }) // question
+  @ApiResponse({ status: 204 }) // question
   @ApiResponse({ status: 404, description: 'Not Found' })
   @Delete('/remove-suggested')
   public async removeProductFromSuggested(@Body() body: ProductSuggestionDto) {
     return this.productsService.removeProductFromSuggested(body);
+  }
+
+  @ApiOperation({ summary: 'Add vitamin to product' })
+  @ApiResponse({ status: 204 }) // question
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Post('/add-vitamin')
+  public async addVitaminToProduct(@Body() body: VitaminsProduct) {
+    return this.productsService.addVitaminToProduct(body);
+  }
+
+  @ApiOperation({ summary: 'Remove vitamin from product' })
+  @ApiResponse({ status: 204 }) // question
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @Delete('/remove-vitamin')
+  public async removeVitaminFromProduct(@Body() body: VitaminsProduct) {
+    return this.productsService.removeVitaminFromProduct(body);
   }
 }

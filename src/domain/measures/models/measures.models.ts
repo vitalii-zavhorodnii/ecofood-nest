@@ -1,5 +1,14 @@
-import { Column, DataType, Model, Table, HasMany } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  Model,
+  Table,
+  HasMany,
+  ForeignKey,
+} from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { Product } from 'domain/products/models/products.model';
 
 interface MeasureCreationAttrs {
   title: string;
@@ -43,7 +52,10 @@ export class Measure extends Model<Measure, MeasureCreationAttrs> {
     type: DataType.STRING,
     unique: true,
     allowNull: false,
-    validate: {},
   })
   code: string;
+
+  // @ForeignKey(() => Product)
+  // @HasMany(() => Product)
+  // products: Product[];
 }

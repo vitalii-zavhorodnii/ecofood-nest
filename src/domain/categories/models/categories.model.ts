@@ -27,7 +27,7 @@ export class Category extends Model<Category, CategoryCreationAttrs> {
   id: number;
 
   @ApiProperty({ example: true, description: 'Is category active' })
-  is_active: boolean = false;
+  isActive: boolean = false;
 
   @ApiProperty({ example: 'banana', description: 'Unique url of product' })
   @Column({

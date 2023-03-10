@@ -23,7 +23,7 @@ export class CreateProductDto extends UpdateProductDto {
   @Length(1, 100, {
     message: 'required to be 1-100 symbols length',
   })
-  @isUnique()
+  // @isUnique()
   readonly url: string;
 
   @ApiProperty({
@@ -31,5 +31,5 @@ export class CreateProductDto extends UpdateProductDto {
     description: 'ID of measure for product',
   })
   @IsNumber({ allowNaN: false }, { message: 'must be a number' })
-  readonly measure_id: number;
+  readonly measureId: number;
 }

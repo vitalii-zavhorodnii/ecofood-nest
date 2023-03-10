@@ -20,7 +20,7 @@ export class CategoriesService {
   async getAllCategories() {
     return await this.categoryRepostitory.findAll({
       where: {
-        is_active: true,
+        isActive: true,
       },
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
@@ -32,7 +32,7 @@ export class CategoriesService {
         {
           model: Product,
           through: { attributes: [] },
-          attributes: ['id', 'title', 'url', 'image', 'thumb'],
+          attributes: ['id', 'title', 'url', 'image'],
           include: [
             {
               model: Measure,
@@ -60,7 +60,22 @@ export class CategoriesService {
         {
           model: Product,
           attributes: ['id', 'title', 'url'],
-          include: [Measure, Category],
+          through: {
+            attributes: [],
+          },
+          include: [
+            {
+              model: Measure,
+              attributes: ['id', 'title', 'shortcut', 'code'],
+            },
+            {
+              model: Category,
+              attributes: ['id', 'title', 'url'],
+              through: {
+                attributes: [],
+              },
+            },
+          ],
         },
       ],
       attributes: {

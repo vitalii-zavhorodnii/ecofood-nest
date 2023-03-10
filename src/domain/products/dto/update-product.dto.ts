@@ -17,7 +17,7 @@ export class UpdateProductDto {
 
   @IsNumber({ allowNaN: false }, { message: 'must be a number' })
   @IsOptional()
-  readonly measure_id: number;
+  readonly measureId: number;
 
   @ApiProperty({
     example: 'Tasty dish for you',
@@ -39,7 +39,7 @@ export class UpdateProductDto {
     required: false,
   })
   @IsOptional()
-  readonly delivery_text?: string;
+  readonly deliveryText?: string;
 
   @ApiProperty({
     example: false,
@@ -47,7 +47,7 @@ export class UpdateProductDto {
     required: false,
   })
   @IsOptional()
-  readonly in_stock?: boolean = false;
+  readonly inStock?: boolean = false;
 
   @ApiProperty({
     example: 'img.jpg',
@@ -56,12 +56,4 @@ export class UpdateProductDto {
   })
   @IsOptional()
   readonly image?: string;
-
-  @ApiProperty({
-    example: 'img.jpg',
-    description: 'ACCEPT ONLY STRING - INDEV',
-    required: false,
-  })
-  @IsOptional()
-  readonly thumb?: string;
 }

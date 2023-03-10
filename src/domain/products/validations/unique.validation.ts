@@ -23,9 +23,10 @@ export function isUnique(validationOptions?: ValidationOptions) {
 @ValidatorConstraint({ name: 'unique', async: true })
 @Injectable()
 export class UniqueValidation implements ValidatorConstraintInterface {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private productsService: ProductsService) {}
 
   async validate(value: string, { property }): Promise<boolean> {
+    console.error(this.productsService);
     const product = await this.productsService.getByQuery({
       [property]: value.toLowerCase(),
     });

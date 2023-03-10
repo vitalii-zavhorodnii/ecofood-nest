@@ -10,6 +10,8 @@ import { ProductsCategories } from 'domain/products/models/products-categories.m
 import { Category } from 'domain/categories/models/categories.model';
 import { Measure } from 'domain/measures/models/measures.models';
 import { ProductsSuggested } from './models/products-suggested.model';
+import { Vitamin } from 'domain/vitamins/models/vitamins.model';
+import { ProductsVitamins } from './models/products-vitamins.model';
 
 @Module({
   controllers: [ProductsController],
@@ -22,6 +24,8 @@ import { ProductsSuggested } from './models/products-suggested.model';
       ProductsCategories,
       Measure,
       ProductsSuggested,
+      Vitamin,
+      ProductsVitamins,
     ]),
     CategoriesModule,
   ],
