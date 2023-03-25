@@ -15,12 +15,15 @@ import { ProductsSuggested } from 'domain/products/models/products-suggested.mod
 import { Vitamin } from 'domain/vitamins/models/vitamins.model';
 import { ProductsVitamins } from 'domain/products/models/products-vitamins.model';
 
+import enviroment from 'env';
+
 @Module({
   controllers: [],
   providers: [],
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      load: [enviroment],
+      // envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
